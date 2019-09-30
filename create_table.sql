@@ -1,43 +1,55 @@
---Create table code. 
-
-CREATE TABLE employees (
-	emp_no INT PRIMARY KEY AUTO_INCREMENT,
-	birth_date DATE,
-	first_name VARCHAR(14),
-	last_name VARCHAR(16),
-	sex ENUM('M','F'),
-	hire_date DATE
+CREATE TABLE `customers` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`customer_name` varchar(20) NOT NULL UNIQUE,
+	`contact_person` INT,
+	`phone` varchar(20) NOT NULL,
+	`email` varchar(50) NOT NULL,
+	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE title (
-	emp_no INT FOREIGN KEY,
-	title VARCHAR(50) PRIMARY KEY,
-	from_date DATE,
-	to_date DATE
+CREATE TABLE `customer_users` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`first_name` varchar(20) NOT NULL,
+	`last_name` varchar(20) NOT NULL,
+	`customer` INT NOT NULL,
+	`phone` varchar(20),
+	`email` varchar(50) NOT NULL,
+	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE salaries (
-	emp_no INT FOREIGN KEY,
-	salary INT,
-	from_date DATE KEY,
-	to_date DATE KEY,
+CREATE TABLE `case` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`short_description` varchar(100) NOT NULL,
+	`description` TEXT NOT NULL,
+	`customer_user` INT NOT NULL,
+	`case_employee` INT NOT NULL,
+	`status` INT NOT NULL,
+	`time_spent` FLOAT(4),
+	`hidden_information` TEXT,
+	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE dept_manager (
-	dept_no CHAR(4) PRIMARY KEY,
-	emp_no INT FOREIGN KEY,
-	from_date DATE,
-	to_date DATE,
+CREATE TABLE `employees` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`first_name` varchar(20) NOT NULL,
+	`last_name` varchar(20) NOT NULL,
+	`phone` varchar(20),
+	`email` varchar(50) NOT NULL,
+	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE department (
-	dept_no CHAR(4) PRIMARY KEY,
-	dept_emp VARCHAR(40),
+CREATE TABLE `status` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`title` varchar(30) NOT NULL UNIQUE,
+	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE dept_emp (
-	emp_no INT FOREIGN KEY,
-	dept_emp INT FOREIGN KEY,
-	from_date DATE,
-	to_date DATE,
-);
+ALTER TABLE `customers` ADD CONSTRAINT `customers_fk0` FOREIGN KEY (`contact_person`) REFERENCES `customer_users`(`id`);
+
+ALTER TABLE `customer_users` ADD CONSTRAINT `customer_users_fk0` FOREIGN KEY (`customer`) REFERENCES `customers`(`id`);
+
+ALTER TABLE `case` ADD CONSTRAINT `case_fk0` FOREIGN KEY (`customer_user`) REFERENCES `customer_users`(`id`);
+
+ALTER TABLE `case` ADD CONSTRAINT `case_fk1` FOREIGN KEY (`case_employee`) REFERENCES `employees`(`id`);
+
+ALTER TABLE `case` ADD CONSTRAINT `case_fk2` FOREIGN KEY (`status`) REFERENCES `status`(`id`);
