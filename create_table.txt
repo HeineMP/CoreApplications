@@ -1,12 +1,12 @@
 --Create table code. 
 
 CREATE TABLE employees (
-	emp_no INT PRIMARY KEY IDENTITY (1,1),
+	emp_no INT PRIMARY KEY AUTO_INCREMENT,
 	birth_date DATE,
 	first_name VARCHAR(14),
 	last_name VARCHAR(16),
 	sex ENUM('M','F'),
-	hire_date DATE,
+	hire_date DATE
 );
 
 CREATE TABLE title (
