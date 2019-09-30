@@ -10,22 +10,22 @@ CREATE TABLE employees (
 );
 
 CREATE TABLE title (
-	emp_no INT KEY,
+	emp_no INT FOREIGN KEY,
 	title VARCHAR(50) PRIMARY KEY,
 	from_date DATE,
-	to_date DATE,
+	to_date DATE
 );
 
 CREATE TABLE salaries (
-	emp_no INT KEY,
+	emp_no INT FOREIGN KEY,
 	salary INT,
 	from_date DATE KEY,
 	to_date DATE KEY,
 );
 
 CREATE TABLE dept_manager (
-	dept_no CHAR(4) KEY,
-	emp_no INT KEY,
+	dept_no CHAR(4) PRIMARY KEY,
+	emp_no INT FOREIGN KEY,
 	from_date DATE,
 	to_date DATE,
 );
@@ -36,8 +36,8 @@ CREATE TABLE department (
 );
 
 CREATE TABLE dept_emp (
-	emp_no INT KEY,
-	dept_emp INT KEY,
+	emp_no INT FOREIGN KEY,
+	dept_emp INT FOREIGN KEY,
 	from_date DATE,
 	to_date DATE,
 );
