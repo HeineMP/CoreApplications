@@ -1,6 +1,6 @@
 CREATE TABLE `customers` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`customer_name` varchar(20) NOT NULL UNIQUE,
+	`name` varchar(20) NOT NULL UNIQUE,
 	`contact_person` INT,
 	`phone` varchar(20) NOT NULL,
 	`email` varchar(50) NOT NULL,
