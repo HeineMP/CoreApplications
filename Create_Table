@@ -1,5 +1,5 @@
 \\Create table code. 
 
 CREATE TABLE employees (
-emp:no INT PRIMARY_KEY AutoNumber
+	emp_no INT PRIMARY_KEY AutoNumber
 )
