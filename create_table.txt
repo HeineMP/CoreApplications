@@ -1,5 +1,0 @@
-\\Create table code. 
-
-CREATE TABLE employees (
-	emp_no INT PRIMARY_KEY AutoNumber
-)
