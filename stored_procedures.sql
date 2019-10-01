@@ -133,3 +133,11 @@ BEGIN
     SELECT * FROM status WHERE status.id=id;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_status
+()
+BEGIN
+    SELECT * FROM status;
+END //
+DELIMITER ;
