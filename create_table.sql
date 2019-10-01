@@ -17,7 +17,7 @@ CREATE TABLE `customer_users` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `case` (
+CREATE TABLE `cases` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`short_description` varchar(100) NOT NULL,
 	`description` TEXT NOT NULL,
