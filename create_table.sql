@@ -21,7 +21,8 @@ CREATE TABLE `cases` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`short_description` varchar(100) NOT NULL,
 	`description` TEXT NOT NULL,
-	`customer_user` INT NOT NULL,
+	`customer` INT NOT NULL,
+	`customer_user` INT,
 	`case_employee` INT NOT NULL,
 	`status` INT NOT NULL,
 	`time_spent` FLOAT(4),
@@ -48,8 +49,10 @@ ALTER TABLE `customers` ADD CONSTRAINT `customers_fk0` FOREIGN KEY (`contact_per
 
 ALTER TABLE `customer_users` ADD CONSTRAINT `customer_users_fk0` FOREIGN KEY (`customer`) REFERENCES `customers`(`id`);
 
-ALTER TABLE `case` ADD CONSTRAINT `case_fk0` FOREIGN KEY (`customer_user`) REFERENCES `customer_users`(`id`);
+ALTER TABLE `cases` ADD CONSTRAINT `case_fk0` FOREIGN KEY (`customer_user`) REFERENCES `customer_users`(`id`);
 
-ALTER TABLE `case` ADD CONSTRAINT `case_fk1` FOREIGN KEY (`case_employee`) REFERENCES `employees`(`id`);
+ALTER TABLE `cases` ADD CONSTRAINT `case_fk1` FOREIGN KEY (`case_employee`) REFERENCES `employees`(`id`);
 
-ALTER TABLE `case` ADD CONSTRAINT `case_fk2` FOREIGN KEY (`status`) REFERENCES `status`(`id`);
+ALTER TABLE `cases` ADD CONSTRAINT `case_fk2` FOREIGN KEY (`status`) REFERENCES `status`(`id`);
+
+ALTER TABLE `cases` ADD CONSTRAINT `case_fk3` FOREIGN KEY (`customer`) REFERENCES `customers`(`id`);
