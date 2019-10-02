@@ -1,5 +1,6 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
+using System.Collections.Generic;
 
 namespace CoreApplications
 {
@@ -9,16 +10,64 @@ namespace CoreApplications
         public int id;
         public string title;
     }
+    class Employee
+    {
+        public int id;
+        public string first_name;
+        public string last_name;
+        public string phone;
+        public string email;
+    }
+    class Customer
+    {
+        public int id;
+        public string name;
+        public Nullable<int> contact_person;
+        public string phone;
+        public string email;
+    }
+    class CustomerUser
+    {
+        public int id;
+        public string first_name;
+        public string last_name;
+        public int customer;
+        public string phone;
+        public string email;
+    }
+    class Case
+    {
+        public int id;
+        public string short_description;
+        public string description;
+        public int customer;
+        public Nullable<int> customer_user;
+        public int case_employee;
+        public int status;
+        public Nullable<float> time_spent;
+        public string hidden_information;
+    }
 
     class Program
     {
         static void Main(string[] args)
         {
-            var result = GetAllStatus();
-            foreach (var item in result)
-            {
-                Console.WriteLine($"ID: {item.id} Title: {item.title}");
-            }
+
+            var result = GetAllCases();
+            result.ForEach(i => Console.Write("ID: {0} Short Description: {1} Customer: {2} Customer User: {3} Case Employee: {4} Status: {5} Time Spent: {6}\n", i.id, i.description, i.customer, i.customer_user, i.case_employee, i.status, i.time_spent));
+
+            //for GetCustomer
+            //result.ForEach(i => Console.Write("ID: {0} Name: {1} Contact Person {2} Phone: {3} Email: {4}\n", i.id, i.name, i.contact_person, i.phone, i.email));
+
+            //for GetCase
+            //result.ForEach(i => Console.Write("ID: {0} Short Description: {1} Description: {2} Customer: {3} Customer User: {4} Case Employee: {5} Status: {6} Time Spent: {7} Hidden Information: {8}\n", i.id, i.short_description, i.description, i.customer, i.customer_user, i.case_employee, i.status, i.time_spent, i.hidden_information));
+
+            //for GetCustomerUser & GetEmployee
+            //result.ForEach(i => Console.Write("ID: {0} Name: {2}, {1} Phone: {3} Email: {4}\n", i.id, i.first_name, i.last_name, i.phone, i.email));
+
+            //for GetAllStatus
+            //result.ForEach(i => Console.Write("ID: {0} Title: {1}\n", i.id, i.title));
+
             //CreateCustomerUser("Bjarke", "Jensen", 1, "+4521215121", "lort@asda.dk");
             //CreateCustomerUser("Morten", "Jensen", 1, "+4521215121", "lort@qweq.dk");
         }
@@ -99,7 +148,6 @@ namespace CoreApplications
             var query = $"CALL update_employee({id},'{fname}','{lname}','{phone}','{email}')";
             ExecuteNonQuery(query);
         }
-
         public static void DeleteCustomerUser(int id)
         {
             var query = $"CALL delete_customer_user({id})";
@@ -110,46 +158,143 @@ namespace CoreApplications
             var query = $"CALL delete_case({id})";
             ExecuteNonQuery(query);
         }
-        public static void GetCase(int id)
+        public static List<Case> GetCase(int id)
         {
             var query = $"CALL get_case({id})";
-            ExecuteNonQuery(query);
+            var conn = Connection();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            conn.Open();
+            var result = cmd.ExecuteReader();
+            var resultArray = new List<Case>();
+            while (result.Read())
+            {
+                Nullable<int> customer_user = (result.IsDBNull(4)) ? null : (int?)result.GetInt32("customer_user");
+                Nullable<float> time_spent = (result.IsDBNull(7)) ? null : (float?)result.GetFloat("time_spent");
+                string hidden_information = (result.IsDBNull(8)) ? null : (string?)result.GetString("hidden_information");
+
+                resultArray.Add(
+                    new Case
+                    {
+                        id = result.GetInt32("id"),
+                        short_description = result.GetString("short_description"),
+                        description = result.GetString("description"),
+                        customer = result.GetInt32("customer"),
+                        customer_user = customer_user,
+                        case_employee = result.GetInt32("case_employee"),
+                        status = result.GetInt32("status"),
+                        time_spent = time_spent,
+                        hidden_information = hidden_information
+                    });
+            }
+            conn.Close();
+            return resultArray;
         }
-        public static void GetCustomerUser(int id)
+        public static List<Case> GetAllCases()
+        {
+            var query = $"CALL get_all_cases()";
+            var conn = Connection();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            conn.Open();
+            var result = cmd.ExecuteReader();
+            var resultArray = new List<Case>();
+            while (result.Read())
+            {
+                Nullable<int> customer_user = (result.IsDBNull(4)) ? null : (int?)result.GetInt32("customer_user");
+                Nullable<float> time_spent = (result.IsDBNull(7)) ? null : (float?)result.GetFloat("time_spent");
+
+                resultArray.Add(
+                    new Case
+                    {
+                        id = result.GetInt32("id"),
+                        short_description = result.GetString("short_description"),
+                        customer = result.GetInt32("customer"),
+                        customer_user = customer_user,
+                        case_employee = result.GetInt32("case_employee"),
+                        status = result.GetInt32("status"),
+                        time_spent = time_spent
+                    });
+            }
+            conn.Close();
+            return resultArray;
+        }
+        public static List<CustomerUser> GetCustomerUser(int id)
         {
             var query = $"CALL get_customer_user({id})";
-            ExecuteNonQuery(query);
+            var conn = Connection();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            conn.Open();
+            var result = cmd.ExecuteReader();
+            var resultArray = new List<CustomerUser>();
+            while (result.Read())
+            {
+                resultArray.Add(new CustomerUser { id = result.GetInt32("id"), first_name = result.GetString("first_name"), last_name = result.GetString("last_name"), phone = result.GetString("phone"), email = result.GetString("email") });
+            }
+            conn.Close();
+            return resultArray;
         }
-        public static void GetCustomer(int id)
+        public static List<Customer> GetCustomer(int id)
         {
             var query = $"CALL get_customer({id})";
-            ExecuteNonQuery(query);
+            var conn = Connection();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            conn.Open();
+            var result = cmd.ExecuteReader();
+            var resultArray = new List<Customer>();
+            while (result.Read())
+            {
+                Nullable<int> contact_person = (result.IsDBNull(2)) ? null : (int?)result.GetInt32("contact_person");
+                resultArray.Add(new Customer { 
+                    id = result.GetInt32("id"),
+                    name = result.GetString("name"),
+                    contact_person = contact_person,
+                    phone = result.GetString("phone"),
+                    email = result.GetString("email")
+                });
+            }
+            conn.Close();
+            return resultArray;
         }
-        public static void GetEmployee(int id)
+        public static List<Employee> GetEmployee(int id)
         {
             var query = $"CALL get_employee({id})";
-            ExecuteNonQuery(query);
+            var conn = Connection();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            conn.Open();
+            var result = cmd.ExecuteReader();
+            var resultArray = new List<Employee>();
+            while (result.Read())
+            {
+                resultArray.Add(new Employee { id = result.GetInt32("id"), first_name = result.GetString("first_name"), last_name = result.GetString("last_name"), phone = result.GetString("phone"), email = result.GetString("email") });
+            }
+            conn.Close();
+            return resultArray;
         }
-        public static void GetStatus(int id)
+        public static List<Status> GetStatus(int id)
         {
             var query = $"CALL get_status({id})";
-            ExecuteNonQuery(query);
+            var conn = Connection();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            conn.Open();
+            var result = cmd.ExecuteReader();
+            var resultArray = new List<Status>();
+            while (result.Read())
+            {
+                resultArray.Add(new Status { id = result.GetInt32("id"), title = result.GetString("title") });
+            }
+            conn.Close();
+            return resultArray;
         }
-        public static Status[] GetAllStatus()
+        public static List<Status> GetAllStatus()
         {
             var query = $"CALL get_all_status()";
             var conn = Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
-            Status[] resultArray = new Status[];
-            int i = 0;
+            var resultArray = new List<Status>();
             while (result.Read())
             {
-                resultArray[i] = new Status();
-                resultArray[i].id = result.GetInt32("id");
-                resultArray[i].title = result.GetString("title");
-                i++;
+                resultArray.Add (new Status { id = result.GetInt32("id"), title = result.GetString("title") });
             }
             conn.Close();
             return resultArray;
