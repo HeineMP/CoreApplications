@@ -141,3 +141,11 @@ BEGIN
     SELECT * FROM status;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_cases
+()
+BEGIN
+    SELECT * FROM cases;
+END //
+DELIMITER ;
