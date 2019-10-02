@@ -5,22 +5,17 @@ using MySql.Data.MySqlClient;
 
 namespace CoreApplications
 {
-    class EmployeeDataAccess
+    class EmployeeDataAccess : IEmployeeDataAccess
     {
-        public static void CreateEmployee(string fname, string lname, string phone, string email)
+        public bool CreateEmployee(string fname, string lname, string phone, string email)
         {
             var query = $"CALL create_employee('{fname}','{lname}','{phone}','{email}')";
-            Program.ExecuteNonQuery(query);
+            return SQLFunctions.ExecuteNonQuery(query);
         }
-        public static void UpdateEmployee(int id, string fname, string lname, string phone, string email)
-        {
-            var query = $"CALL update_employee({id},'{fname}','{lname}','{phone}','{email}')";
-            Program.ExecuteNonQuery(query);
-        }
-        public static List<Employee> GetEmployee(int id)
+        public List<Employee> GetEmployee(int id)
         {
             var query = $"CALL get_employee({id})";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -32,10 +27,10 @@ namespace CoreApplications
             conn.Close();
             return resultArray;
         }
-        public static List<Employee> GetAllEmployees()
+        public List<Employee> GetAllEmployees()
         {
             var query = $"CALL get_all_employees()";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -46,6 +41,11 @@ namespace CoreApplications
             }
             conn.Close();
             return resultArray;
+        }
+        public bool UpdateEmployee(int id, string fname, string lname, string phone, string email)
+        {
+            var query = $"CALL update_employee({id},'{fname}','{lname}','{phone}','{email}')";
+            return SQLFunctions.ExecuteNonQuery(query);
         }
     }
 }

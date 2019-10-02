@@ -5,27 +5,17 @@ using MySql.Data.MySqlClient;
 
 namespace CoreApplications
 {
-    class CustomerUserDataAccess
+    class CustomerUserDataAccess : ICustomerUserDataAccess
     {
-        public static void CreateCustomerUser(string fname, string lname, int company, string phone, string email)
+        public bool CreateCustomerUser(string fname, string lname, int company, string phone, string email)
         {
             var query = $"CALL create_customer_user('{fname}','{lname}',{company},'{phone}','{email}')";
-            Program.ExecuteNonQuery(query);
+            return SQLFunctions.ExecuteNonQuery(query);
         }
-        public static void UpdateCustomerUser(int id, string fname, string lname, string phone, string email)
-        {
-            var query = $"CALL update_customer_user({id},'{fname}','{lname}','{phone}','{email}')";
-            Program.ExecuteNonQuery(query);
-        }
-        public static void DeleteCustomerUser(int id)
-        {
-            var query = $"CALL delete_customer_user({id})";
-            Program.ExecuteNonQuery(query);
-        }
-        public static List<CustomerUser> GetCustomerUser(int id)
+        public List<CustomerUser> GetCustomerUser(int id)
         {
             var query = $"CALL get_customer_user({id})";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -37,10 +27,10 @@ namespace CoreApplications
             conn.Close();
             return resultArray;
         }
-        public static List<CustomerUser> GetAllCustomerUsers()
+        public List<CustomerUser> GetAllCustomerUsers()
         {
             var query = $"CALL get_all_customer_users()";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -51,6 +41,16 @@ namespace CoreApplications
             }
             conn.Close();
             return resultArray;
+        }
+        public bool UpdateCustomerUser(int id, string fname, string lname, string phone, string email)
+        {
+            var query = $"CALL update_customer_user({id},'{fname}','{lname}','{phone}','{email}')";
+            return SQLFunctions.ExecuteNonQuery(query);
+        }
+        public bool DeleteCustomerUser(int id)
+        {
+            var query = $"CALL delete_customer_user({id})";
+            return SQLFunctions.ExecuteNonQuery(query);
         }
     }
 }

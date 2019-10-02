@@ -5,27 +5,17 @@ using MySql.Data.MySqlClient;
 
 namespace CoreApplications
 {
-    class CaseDataAccess
+    class CaseDataAccess : ICaseDataAccess
     {
-        public static void CreateCase(string short_description, string description, int customer, int customer_user, int case_employee, int status)
+        public bool CreateCase(string short_description, string description, int customer, int customer_user, int case_employee, int status)
         {
             var query = $"CALL create_case('{short_description}','{description}',{customer},{customer_user},{case_employee},{status})";
-            Program.ExecuteNonQuery(query);
+            return SQLFunctions.ExecuteNonQuery(query);
         }
-        public static void UpdateCase(int id, string short_description, string description, int customer, int customer_user, int case_employee, int status, float time_spent, string hidden_information)
-        {
-            var query = $"CALL update_case({id},'{short_description}','{description}',{customer},{customer_user},{case_employee},{status},{time_spent},'{hidden_information}')";
-            Program.ExecuteNonQuery(query);
-        }
-        public static void DeleteCase(int id)
-        {
-            var query = $"CALL delete_case({id})";
-            Program.ExecuteNonQuery(query);
-        }
-        public static List<Case> GetCase(int id)
+        public List<Case> GetCase(int id)
         {
             var query = $"CALL get_case({id})";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -53,10 +43,10 @@ namespace CoreApplications
             conn.Close();
             return resultArray;
         }
-        public static List<Case> GetAllCases()
+        public List<Case> GetAllCases()
         {
             var query = $"CALL get_all_cases()";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -80,6 +70,16 @@ namespace CoreApplications
             }
             conn.Close();
             return resultArray;
+        }
+        public bool UpdateCase(int id, string short_description, string description, int customer, int customer_user, int case_employee, int status, float time_spent, string hidden_information)
+        {
+            var query = $"CALL update_case({id},'{short_description}','{description}',{customer},{customer_user},{case_employee},{status},{time_spent},'{hidden_information}')";
+            return SQLFunctions.ExecuteNonQuery(query);
+        }
+        public bool DeleteCase(int id)
+        {
+            var query = $"CALL delete_case({id})";
+            return SQLFunctions.ExecuteNonQuery(query);
         }
     }
 }

@@ -7,15 +7,15 @@ namespace CoreApplications
 {
     class StatusDataAccess : IStatusDataAccess
     {
-        public static void CreateStatus(string title)
+        public bool CreateStatus(string title)
         {
             var query = $"CALL create_status('{title}')";
-            Program.ExecuteNonQuery(query);
+            return SQLFunctions.ExecuteNonQuery(query);
         }
         public List<Status> GetStatus(int id)
         {
             var query = $"CALL get_status({id})";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -30,7 +30,7 @@ namespace CoreApplications
         public List<Status> GetAllStatus()
         {
             var query = $"CALL get_all_status()";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();

@@ -5,27 +5,17 @@ using MySql.Data.MySqlClient;
 
 namespace CoreApplications
 {
-    class CustomerDataAccess
+    class CustomerDataAccess : ICustomerDataAccess
     {
-        public static void CreateCustomer(string name, string phone, string email)
+        public bool CreateCustomer(string name, string phone, string email)
         {
             var query = $"CALL create_customer('{name}','{phone}','{email}')";
-            Program.ExecuteNonQuery(query);
+            return SQLFunctions.ExecuteNonQuery(query);
         }
-        public static void UpdateCustomer(int id, string name, int contact_person, string phone, string email)
-        {
-            var query = $"CALL update_customer({id},'{name}',{contact_person},'{phone}','{email}')";
-            Program.ExecuteNonQuery(query);
-        }
-        public static void UpdateCustomerContactPerson(int id, int contact_person)
-        {
-            var query = $"CALL update_customer_contact_person({id},{contact_person})";
-            Program.ExecuteNonQuery(query);
-        }
-        public static List<Customer> GetCustomer(int id)
+        public List<Customer> GetCustomer(int id)
         {
             var query = $"CALL get_customer({id})";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -45,10 +35,10 @@ namespace CoreApplications
             conn.Close();
             return resultArray;
         }
-        public static List<Customer> GetAllCustomers()
+        public List<Customer> GetAllCustomers()
         {
             var query = $"CALL get_all_customers()";
-            var conn = Program.Connection();
+            var conn = SQLFunctions.Connection();
             MySqlCommand cmd = new MySqlCommand(query, conn);
             conn.Open();
             var result = cmd.ExecuteReader();
@@ -67,6 +57,16 @@ namespace CoreApplications
             }
             conn.Close();
             return resultArray;
+        }
+        public bool UpdateCustomer(int id, string name, int contact_person, string phone, string email)
+        {
+            var query = $"CALL update_customer({id},'{name}',{contact_person},'{phone}','{email}')";
+            return SQLFunctions.ExecuteNonQuery(query);
+        }
+        public bool UpdateCustomerContactPerson(int id, int contact_person)
+        {
+            var query = $"CALL update_customer_contact_person({id},{contact_person})";
+            return SQLFunctions.ExecuteNonQuery(query);
         }
     }
 }
