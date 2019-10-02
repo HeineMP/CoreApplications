@@ -149,3 +149,27 @@ BEGIN
     SELECT * FROM cases;
 END //
 DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_customer_users
+()
+BEGIN
+    SELECT * FROM customer_users;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_customers
+()
+BEGIN
+    SELECT * FROM customers;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_employee
+()
+BEGIN
+    SELECT * FROM employees;
+END //
+DELIMITER ;
