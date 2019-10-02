@@ -106,7 +106,7 @@ DELIMITER //
 CREATE PROCEDURE get_customer_user
 (IN id INT)
 BEGIN
-    SELECT * FROM customer_users WHERE cascustomer_userses.id=id;
+    SELECT * FROM customer_users WHERE customer_users.id=id;
 END //
 DELIMITER ;
 
