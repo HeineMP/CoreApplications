@@ -6,12 +6,12 @@ namespace CoreApplications
 {
 
     class Program
-    {   
+    {
         static void Main(string[] args)
         {
 
-            var result = CaseDataAccess.GetAllCases();
-            result.ForEach(i => Console.Write("ID: {0} Short Description: {1} Customer: {2} Customer User: {3} Case Employee: {4} Status: {5} Time Spent: {6}\n", i.id, i.description, i.customer, i.customer_user, i.case_employee, i.status, i.time_spent));
+            var result = CustomerUserDataAccess.GetAllCustomerUsers();
+            //result.ForEach(i => Console.Write("ID: {0} Short Description: {1} Customer: {2} Customer User: {3} Case Employee: {4} Status: {5} Time Spent: {6}\n", i.id, i.short_description, i.customer, i.customer_user, i.case_employee, i.status, i.time_spent));
 
             //for GetCustomer
             //result.ForEach(i => Console.Write("ID: {0} Name: {1} Contact Person {2} Phone: {3} Email: {4}\n", i.id, i.name, i.contact_person, i.phone, i.email));
@@ -20,7 +20,7 @@ namespace CoreApplications
             //result.ForEach(i => Console.Write("ID: {0} Short Description: {1} Description: {2} Customer: {3} Customer User: {4} Case Employee: {5} Status: {6} Time Spent: {7} Hidden Information: {8}\n", i.id, i.short_description, i.description, i.customer, i.customer_user, i.case_employee, i.status, i.time_spent, i.hidden_information));
 
             //for GetCustomerUser & GetEmployee
-            //result.ForEach(i => Console.Write("ID: {0} Name: {2}, {1} Phone: {3} Email: {4}\n", i.id, i.first_name, i.last_name, i.phone, i.email));
+            result.ForEach(i => Console.Write("ID: {0} Name: {2}, {1} Phone: {3} Email: {4}\n", i.id, i.first_name, i.last_name, i.phone, i.email));
 
             //for GetAllStatus
             //result.ForEach(i => Console.Write("ID: {0} Title: {1}\n", i.id, i.title));
@@ -40,10 +40,6 @@ namespace CoreApplications
 
             var connection = new MySqlConnection(connectionString.ConnectionString);
             return connection;
-        }
-
-        public static void ExecuteQuery(string query)
-        {
         }
 
         public static void ExecuteNonQuery(string query)

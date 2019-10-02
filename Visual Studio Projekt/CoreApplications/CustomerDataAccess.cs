@@ -45,5 +45,28 @@ namespace CoreApplications
             conn.Close();
             return resultArray;
         }
+        public static List<Customer> GetAllCustomers()
+        {
+            var query = $"CALL get_all_customers()";
+            var conn = Program.Connection();
+            MySqlCommand cmd = new MySqlCommand(query, conn);
+            conn.Open();
+            var result = cmd.ExecuteReader();
+            var resultArray = new List<Customer>();
+            while (result.Read())
+            {
+                Nullable<int> contact_person = (result.IsDBNull(2)) ? null : (int?)result.GetInt32("contact_person");
+                resultArray.Add(new Customer
+                {
+                    id = result.GetInt32("id"),
+                    name = result.GetString("name"),
+                    contact_person = contact_person,
+                    phone = result.GetString("phone"),
+                    email = result.GetString("email")
+                });
+            }
+            conn.Close();
+            return resultArray;
+        }
     }
 }

@@ -5,7 +5,7 @@ using MySql.Data.MySqlClient;
 
 namespace CoreApplications
 {
-    class StatusDataAccess
+    class StatusDataAccess : IStatusDataAccess
     {
         public static void CreateStatus(string title)
         {
