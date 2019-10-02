@@ -5,51 +5,8 @@ using System.Collections.Generic;
 namespace CoreApplications
 {
 
-    class Status
-    {
-        public int id;
-        public string title;
-    }
-    class Employee
-    {
-        public int id;
-        public string first_name;
-        public string last_name;
-        public string phone;
-        public string email;
-    }
-    class Customer
-    {
-        public int id;
-        public string name;
-        public Nullable<int> contact_person;
-        public string phone;
-        public string email;
-    }
-    class CustomerUser
-    {
-        public int id;
-        public string first_name;
-        public string last_name;
-        public int customer;
-        public string phone;
-        public string email;
-    }
-    class Case
-    {
-        public int id;
-        public string short_description;
-        public string description;
-        public int customer;
-        public Nullable<int> customer_user;
-        public int case_employee;
-        public int status;
-        public Nullable<float> time_spent;
-        public string hidden_information;
-    }
-
     class Program
-    {
+    {   
         static void Main(string[] args)
         {
 
