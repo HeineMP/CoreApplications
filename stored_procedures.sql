@@ -106,7 +106,7 @@ DELIMITER //
 CREATE PROCEDURE get_customer_user
 (IN id INT)
 BEGIN
-    SELECT * FROM customer_users WHERE cascustomer_userses.id=id;
+    SELECT * FROM customer_users WHERE customer_users.id=id;
 END //
 DELIMITER ;
 
@@ -131,5 +131,45 @@ CREATE PROCEDURE get_status
 (IN id INT)
 BEGIN
     SELECT * FROM status WHERE status.id=id;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_status
+()
+BEGIN
+    SELECT * FROM status;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_cases
+()
+BEGIN
+    SELECT * FROM cases;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_customer_users
+()
+BEGIN
+    SELECT * FROM customer_users;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_customers
+()
+BEGIN
+    SELECT * FROM customers;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE get_all_employee
+()
+BEGIN
+    SELECT * FROM employees;
 END //
 DELIMITER ;
