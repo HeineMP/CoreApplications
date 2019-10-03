@@ -2,18 +2,36 @@
 using System.Collections.Generic;
 using System.Text;
 using MySql.Data.MySqlClient;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace CoreApplications
 {
     class SQLFunctions
     {
+        public static string[] ReadConfig()
+        {
+            string[] config = new string[4];
+            string file = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\../config.json";
+            var json = File.ReadAllText(file);
+            var json_object = JObject.Parse(json);
+            if (json_object != null)
+            {
+                config[0] = Convert.ToString(json_object["Server"]);
+                config[1] = Convert.ToString(json_object["UserID"]);
+                config[2] = Convert.ToString(json_object["Password"]);
+                config[3] = Convert.ToString(json_object["Database"]);
+            }
+            return config;
+        }
         public static MySqlConnection Connection()
         {
+            var config = ReadConfig();
             var connectionString = new MySqlConnectionStringBuilder();
-            connectionString.Server = "172.16.240.240";
-            connectionString.UserID = "svc_sqlconnect";
-            connectionString.Password = "St7XmYZQhzmNL4ZY";
-            connectionString.Database = "core_applications";
+            connectionString.Server = config[0];
+            connectionString.UserID = config[1];
+            connectionString.Password = config[2];
+            connectionString.Database = config[3];
 
             var connection = new MySqlConnection(connectionString.ConnectionString);
             return connection;
