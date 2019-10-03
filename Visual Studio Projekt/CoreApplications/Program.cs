@@ -9,7 +9,8 @@ namespace CoreApplications
         static void Main(string[] args)
         {
             BusinessLayer.Business test = new BusinessLayer.Business();
-            test.GetCustomerUser("lort");
+            test.SearchCases("test",true).ForEach(i => Console.Write("ID: {0} Short Description: {1} Customer User: {2}\n", i.id, i.short_description, i.customer_user));
+            
             //StatusDataAccess result = new StatusDataAccess();
             //Console.WriteLine(result.CreateStatus("Test asdasd"));
             //result.ForEach(i => Console.Write("ID: {0} Short Description: {1} Customer: {2} Customer User: {3} Case Employee: {4} Status: {5} Time Spent: {6}\n", i.id, i.short_description, i.customer, i.customer_user, i.case_employee, i.status, i.time_spent));

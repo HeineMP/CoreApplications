@@ -61,6 +61,7 @@ namespace CoreApplications
                     {
                         id = result.GetInt32("id"),
                         short_description = result.GetString("short_description"),
+                        description = result.GetString("description"),
                         customer = result.GetInt32("customer"),
                         customer_user = customer_user,
                         case_employee = result.GetInt32("case_employee"),
