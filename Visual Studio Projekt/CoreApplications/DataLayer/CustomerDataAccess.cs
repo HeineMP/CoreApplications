@@ -58,7 +58,7 @@ namespace CoreApplications
             conn.Close();
             return resultArray;
         }
-        public bool UpdateCustomer(int id, string name, int contact_person, string phone, string email)
+        public bool UpdateCustomer(int id, string name, Nullable<int> contact_person, string phone, string email)
         {
             var query = $"CALL update_customer({id},'{name}',{contact_person},'{phone}','{email}')";
             return SQLFunctions.ExecuteNonQuery(query);
