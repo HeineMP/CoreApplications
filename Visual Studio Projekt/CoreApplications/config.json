@@ -1,6 +1,6 @@
 {
-	"Server":"172.16.240.240",
-	"UserID":"svc_sqlconnect",
-	"Password":"St7XmYZQhzmNL4ZY",
-	"Database":"core_applications"
+  "Server": "172.16.240.240",
+  "UserID": "svc_sqlconnect",
+  "Password": "St7XmYZQhzmNL4ZY",
+  "Database": "test"
 }
