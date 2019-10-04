@@ -154,12 +154,7 @@ namespace CoreApplications
                 if (!string.IsNullOrEmpty(row))
                 {
                     string[] import_case = row.Split('*');
-                    foreach (string item in import_case)
-                    {
-                        Console.WriteLine(item);
-                    }
-                    string query = $"INSERT INTO case (short_description,description,customer,customer_user,case_employee,status) VALUES ('{import_case[0]}','{import_case[1]}',(SELECT customer FROM customer_users WHERE id={import_case[2]}),{import_case[2]},{import_case[3]},{import_case[4]})";
-                    Console.WriteLine(query);
+                    string query = $"INSERT INTO cases (short_description,description,customer,customer_user,case_employee,status) VALUES ('{import_case[0]}','{import_case[1]}',(SELECT customer FROM customer_users WHERE id={import_case[2]}),{import_case[2]},{import_case[3]},{import_case[4]})";
                     SQLFunctions.ExecuteNonQuery(query);
                 }
             }
