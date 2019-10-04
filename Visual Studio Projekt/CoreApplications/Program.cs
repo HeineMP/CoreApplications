@@ -8,8 +8,11 @@ namespace CoreApplications
     {
         static void Main(string[] args)
         {
-            BusinessLayer.Business test = new BusinessLayer.Business();
-            test.SearchCases("test",true).ForEach(i => Console.Write("ID: {0} Short Description: {1} Customer User: {2}\n", i.id, i.short_description, i.customer_user));
+            SQLFunctions.ImportCases();
+            //SQLFunctions.WriteConfig("172.16.240.240", "svc_sqlconnect", "St7XmYZQhzmNL4ZY", "core_applications");
+            
+            //BusinessLayer.Business test = new BusinessLayer.Business();
+            //test.SearchCases("test",true).ForEach(i => Console.Write("ID: {0} Short Description: {1} Customer User: {2}\n", i.id, i.short_description, i.customer_user));
             
             //StatusDataAccess result = new StatusDataAccess();
             //Console.WriteLine(result.CreateStatus("Test asdasd"));
