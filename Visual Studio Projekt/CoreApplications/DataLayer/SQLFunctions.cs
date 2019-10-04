@@ -4,6 +4,7 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using Newtonsoft.Json.Linq;
 using System.IO;
+using System.Data;
 
 namespace CoreApplications
 {
@@ -46,9 +47,130 @@ namespace CoreApplications
         {
             string file = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\../initialDatabaseSetup.txt";
             var query = File.ReadAllText(file);
-            //Console.WriteLine(query);
             return SQLFunctions.ExecuteNonQuery(query);
-            //return true;
+        }
+        public static bool InsertDefaultStatus()
+        {
+            string[] data = { "Received", "Open", "In progress", "Awaiting Customer", "Awaiting Approval", "On Hold", "Closed" };
+            int i = 0;
+            foreach (string status in data)
+            {
+                Console.WriteLine($"Inserted \"{status}\" into Status table");
+                string query = $"INSERT INTO status (title) VALUES ('{status}')";
+                SQLFunctions.ExecuteNonQuery(query);
+                i++;
+            }
+            if (i > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool ImportCustomers()
+        {
+            string file = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\../companyData.csv";
+            var data = File.ReadAllText(file);
+            int i = 0;
+            foreach (string row in data.Split('\n'))
+            {
+                if (!string.IsNullOrEmpty(row))
+                {
+                    string[] customer = row.Split(',');
+                    string query = $"INSERT INTO customers (name,phone,email) VALUES ('{customer[0]}','{customer[1]}','{customer[2]}')";
+                    Console.WriteLine(query);
+                    SQLFunctions.ExecuteNonQuery(query);
+                    i++;
+                }
+            }
+            if (i > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool ImportCustomerUsers()
+        {
+            string file = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\../userData.csv";
+            var data = File.ReadAllText(file);
+            int i = 0;
+            foreach (string row in data.Split('\n'))
+            {
+                if (!string.IsNullOrEmpty(row))
+                {
+                    string[] customer_user = row.Split(',');
+                    string query = $"INSERT INTO customer_users (first_name,last_name,customer,phone,email) VALUES ('{customer_user[0]}','{customer_user[1]}',{customer_user[2]},'{customer_user[3]}','{customer_user[4]}')";
+                    Console.WriteLine(query);
+                    SQLFunctions.ExecuteNonQuery(query);
+                    i++;
+                }
+            }
+            if (i > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool ImportEmployees()
+        {
+            string file = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\../employeeData.csv";
+            var data = File.ReadAllText(file);
+            int i = 0;
+            foreach (string row in data.Split('\n'))
+            {
+                if (!string.IsNullOrEmpty(row))
+                {
+                    string[] employee = row.Split(',');
+                    string query = $"INSERT INTO employees (first_name,last_name,phone,email) VALUES ('{employee[0]}','{employee[1]}','{employee[2]}','{employee[3]}')";
+                    Console.WriteLine(query);
+                    SQLFunctions.ExecuteNonQuery(query);
+                    i++;
+                }
+            }
+            if (i > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        public static bool ImportCases()
+        {
+            string file = Directory.GetParent(Environment.CurrentDirectory).Parent.FullName + "\\../caseData.csv";
+            var data = File.ReadAllText(file);
+            int i = 0;
+            foreach (string row in data.Split('\n'))
+            {
+                if (!string.IsNullOrEmpty(row))
+                {
+                    string[] import_case = row.Split('*');
+                    foreach (string item in import_case)
+                    {
+                        Console.WriteLine(item);
+                    }
+                    string query = $"INSERT INTO case (short_description,description,customer,customer_user,case_employee,status) VALUES ('{import_case[0]}','{import_case[1]}',(SELECT customer FROM customer_users WHERE id={import_case[2]}),{import_case[2]},{import_case[3]},{import_case[4]})";
+                    Console.WriteLine(query);
+                    SQLFunctions.ExecuteNonQuery(query);
+                }
+            }
+            if (i > 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public static MySqlConnection Connection()
         {

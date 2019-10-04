@@ -8,7 +8,7 @@ namespace CoreApplications
     {
         static void Main(string[] args)
         {
-            SQLFunctions.CreateDBTablesAndProcedures();
+            SQLFunctions.ImportCases();
             //SQLFunctions.WriteConfig("172.16.240.240", "svc_sqlconnect", "St7XmYZQhzmNL4ZY", "core_applications");
             
             //BusinessLayer.Business test = new BusinessLayer.Business();
